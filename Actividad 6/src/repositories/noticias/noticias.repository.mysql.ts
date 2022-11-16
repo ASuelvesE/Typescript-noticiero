@@ -5,26 +5,29 @@ import * as jose from 'jose'
 import INoticiasRepository from './noticias.repository'
 import Noticia from '../../models/Noticia'
 import Periodista from '../../models/Periodista'
+import {montaHtmlNoticias} from '../../utils/plantillas'
 
 export default class NoticiasRepositoryMySQL implements INoticiasRepository {
-    async findAll(): Promise<Noticia[]> {
-        const sql:string = `select n.titulo,n.texto FROM  noticias n`
-        const sql2 = `select n.*,nr.id_noticia,r.url 
-        from noticias n
-        join noticiasRecursos nr on n.id = nr.id_noticia 
-        join recursos r on r.id = nr.id_noticia `
+    async findAll(): Promise<string> {
+        const sql:string = `select n.titulo,n.texto,r.url FROM  noticias n
+                            join noticiasRecursos nr on n.id = nr.id_noticia 
+                            join recursos r on r.id = nr.id_noticia`
+
         try{
             const data: Noticia[] = await executeQuery<Noticia[]>(sql)
-            return data;
+            console.log(data)
+            return montaHtmlNoticias(data);
         }catch(error){
             console.error(error);
-            return [];
+            return '';
         }
     }
-    async findByAutor(autor: string): Promise<Noticia[]> {
-        const sql:string = `select n.titulo,n.texto
-        FROM  noticias n 
-        WHERE id in( 
+    async findByAutor(autor: string): Promise<string> {
+        const sql:string = `select n.titulo,n.texto,r.url
+        FROM  noticias n
+        join noticiasRecursos nr on n.id = nr.id_noticia 
+        join recursos r on r.id = nr.id_noticia 
+        WHERE n.id in( 
             select id_noticia
             from noticiasPeriodistas np 
             WHERE id_periodista in(
@@ -35,10 +38,10 @@ export default class NoticiasRepositoryMySQL implements INoticiasRepository {
         ) `
         try{
             const data: Noticia[] = await executeQuery<Noticia[]>(sql)
-            return data;
+            return montaHtmlNoticias(data);
         }catch(error){
             console.error(error);
-            return [];
+            return '';
         }
     }
 }

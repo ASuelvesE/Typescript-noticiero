@@ -2,6 +2,6 @@ import Noticia from "../../models/Noticia";
 import Periodista from "../../models/Periodista";
 
 export default interface INoticiasRepository{
-    findAll() : Promise<Noticia[]>;
-    findByAutor(autor: string) : Promise<Noticia[]>;
+    findAll() : Promise<string>;
+    findByAutor(autor: string) : Promise<string>;
 }

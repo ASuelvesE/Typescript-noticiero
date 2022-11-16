@@ -9,7 +9,7 @@ const INoticiasRepository = new NoticiasRepositoryMySQL()
 
 router.get('/', async (req: Request, res: Response) => {
     try {       
-        const noticias: Noticia[] = await INoticiasRepository.findAll();
+        const noticias: string = await INoticiasRepository.findAll();
         res.send(noticias)
     }
     catch (error) {
@@ -18,7 +18,7 @@ router.get('/', async (req: Request, res: Response) => {
 })
 router.get('/:periodista', async (req: Request, res: Response) => {
     try {       
-        const noticias: Noticia[] = await INoticiasRepository.findByAutor(req.params.periodista)
+        const noticias: string = await INoticiasRepository.findByAutor(req.params.periodista)
         res.send(noticias)
     }
     catch (error) {

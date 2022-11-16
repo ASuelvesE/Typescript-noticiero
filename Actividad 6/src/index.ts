@@ -16,8 +16,12 @@ const port = process.env.PORT
 
 //routers
 import { routerNoticias } from './routes/noticias.router'
+import { routerApiPeriodistas } from './routes/api/api.periodistas.router'
+import { routerApiNoticias } from './routes/api/api.noticias.router'
 
 app.use('/noticias',routerNoticias)
+app.use('/api/periodistas',routerApiPeriodistas)
+app.use('/api/noticias',routerApiNoticias)
 
 app.listen(process.env.PORT, () => {
   console.log(`Application started on port ${port}`);
