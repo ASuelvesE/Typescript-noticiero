@@ -1,6 +1,9 @@
 import express from 'express';
 import dotenv from "dotenv"
 import cors from 'cors';
+// import the sagger lib
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs'
 
 dotenv.config()
 
@@ -12,6 +15,15 @@ const options: cors.CorsOptions = {
 };
 app.use(cors(options));
 
+
+/* Swagger files start */
+const swaggerFile: any = ("src/swagger/swagger.json");
+const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
+const customCss: any = fs.readFileSync(("src/swagger/swagger.css"), 'utf8');
+const swaggerDocument = JSON.parse(swaggerData);
+/* Swagger files end */
+
+
 const port = process.env.PORT
 
 //routers
@@ -22,6 +34,8 @@ import { routerApiNoticias } from './routes/api/api.noticias.router'
 app.use('/noticias',routerNoticias)
 app.use('/api/periodistas',routerApiPeriodistas)
 app.use('/api/noticias',routerApiNoticias)
+app.use('/api/docs', swaggerUi.serve,
+            swaggerUi.setup(swaggerDocument, undefined, undefined, customCss));
 
 app.listen(process.env.PORT, () => {
   console.log(`Application started on port ${port}`);
