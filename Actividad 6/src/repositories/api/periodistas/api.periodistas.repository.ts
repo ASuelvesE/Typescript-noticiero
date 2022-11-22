@@ -1,4 +1,4 @@
-import Periodista from "../../../models/Periodista"
+import Periodista from "../../../models//mysql/Periodista"
 
 export default interface IApiPeriodistasRepository{
     findAll() : Promise<Periodista[]>;

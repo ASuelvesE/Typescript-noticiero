@@ -4,8 +4,8 @@ import { SignJWT } from 'jose'
 import * as jose from 'jose'
 
 import IApiPeriodistasRepository from './api.periodistas.repository'
-import Periodista from '../../../models/Periodista'
-import Noticia from '../../../models/Noticia'
+import Periodista from '../../../models//mysql/Periodista'
+import Noticia from '../../../models//mysql/Noticia'
 
 export default class ApiPeriodistasRepositoryMySQL implements IApiPeriodistasRepository {
 

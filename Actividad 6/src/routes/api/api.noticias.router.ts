@@ -1,15 +1,14 @@
 import express, { Request, Response } from 'express'
-import Noticia from '../../models/Noticia';
-import IApiNoticiasRepository from '../../repositories/api/noticias/api.noticias.repository';
-import ApiNoticiasRepositoryMySQL from '../../repositories/api/noticias/api.noticias.repository.mysql';
+import { INoticiaMongo } from '../../models/mongo/NoticiaMongo';
+import ApiNoticiaMongoRepository from '../../repositories/api/noticias/mongo/api.noticiaMongo.repository';
 
 const router = express.Router()
 
-const IApiNoticiasRepository = new ApiNoticiasRepositoryMySQL();
+const ApinoticiasRepository = new ApiNoticiaMongoRepository();
 
 router.get('/', async (req: Request, res: Response) => {
     try {       
-        const noticias: Noticia[] = await IApiNoticiasRepository.findAll();
+        const noticias: INoticiaMongo[] = await ApinoticiasRepository.findAll();
         res.send(noticias)
     }
     catch (error) {
@@ -18,7 +17,7 @@ router.get('/', async (req: Request, res: Response) => {
 })
 router.get('/:id', async (req: Request, res: Response) => {
     try {       
-        const noticias: Noticia[] = await IApiNoticiasRepository.findByIdNoticia(Number(req.params.id))
+        const noticias: INoticiaMongo[] = await ApinoticiasRepository.findByIdNoticia(req.params.id)
         res.send(noticias)
     }
     catch (error) {
@@ -27,7 +26,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 })
 router.get('/periodista/:id', async (req: Request, res: Response) => {
     try {       
-        const noticias: Noticia[] = await IApiNoticiasRepository.findByIdPeriodista(Number(req.params.id))
+        const noticias: INoticiaMongo[] = await ApinoticiasRepository.findByIdPeriodista(req.params.id)
         res.send(noticias)
     }
     catch (error) {
@@ -36,7 +35,7 @@ router.get('/periodista/:id', async (req: Request, res: Response) => {
 })
 router.post('/', async (req: Request, res: Response) => {
     try {       
-        const noticias: Noticia[] = await IApiNoticiasRepository.save(req.body)
+        const noticias: INoticiaMongo[] = await ApinoticiasRepository.save(req.body)
         res.send(noticias)
     }
     catch (error) {
@@ -45,7 +44,7 @@ router.post('/', async (req: Request, res: Response) => {
 })
 router.delete('/:id', async (req: Request, res: Response) => {
     try {       
-        const noticias: Noticia[] = await IApiNoticiasRepository.delete(Number(req.params.id))
+        const noticias: INoticiaMongo[] = await ApinoticiasRepository.delete(req.params.id)
         res.send(noticias)
     }
     catch (error) {

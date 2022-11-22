@@ -1,16 +1,18 @@
 import express, { Request, Response } from 'express'
-import NoticiasRepositoryMySQL from '../repositories/noticias/noticias.repository.mysql'
-import INoticiasRepository from '../repositories/noticias/noticias.repository'
-import Noticia from '../models/Noticia'
+import NoticiaMongoRepository from '../repositories/noticias/mongo/noticiaMongoRepository'
+import NoticiaMongo, { INoticiaMongo } from '../models/mongo/NoticiaMongo'
 
 const router = express.Router()
 
-const INoticiasRepository = new NoticiasRepositoryMySQL()
+
+const noticiasRepository = new NoticiaMongoRepository()
 
 router.get('/', async (req: Request, res: Response) => {
     try {       
-        const noticias: string = await INoticiasRepository.findAll();
-        res.send(noticias)
+        const noticias : INoticiaMongo[] = await noticiasRepository.findAll();
+        res.render('pages/noticias', {
+            noticias
+        });
     }
     catch (error) {
         res.send(error)
@@ -18,8 +20,10 @@ router.get('/', async (req: Request, res: Response) => {
 })
 router.get('/:periodista', async (req: Request, res: Response) => {
     try {       
-        const noticias: string = await INoticiasRepository.findByAutor(req.params.periodista)
-        res.send(noticias)
+        const noticias : INoticiaMongo[] = await noticiasRepository.findByAutor(req.params.periodista)
+        res.render('pages/noticias', {
+            noticias: noticias
+        });
     }
     catch (error) {
         res.send(error)

@@ -4,6 +4,9 @@ import cors from 'cors';
 // import the sagger lib
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs'
+//db
+import connectToDB from "./db/mongodb/mongo.connector";
+
 
 dotenv.config()
 
@@ -15,7 +18,7 @@ const options: cors.CorsOptions = {
 };
 app.use(cors(options));
 
-
+app.set('view engine', 'ejs');
 /* Swagger files start */
 const swaggerFile: any = ("src/swagger/swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
@@ -24,7 +27,10 @@ const swaggerDocument = JSON.parse(swaggerData);
 /* Swagger files end */
 
 
+//connect to db
+connectToDB().catch(err => console.log(err));
 const port = process.env.PORT
+
 
 //routers
 import { routerNoticias } from './routes/noticias.router'
