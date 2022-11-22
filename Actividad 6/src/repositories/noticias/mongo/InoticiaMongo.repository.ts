@@ -1,6 +1,6 @@
-import NoticiaMongo,{INoticiaMongo} from "../../../models/mongo/NoticiaMongo"
+import Noticia,{INoticia} from "../../../models/Noticia"
 
 export default interface INoticiaMongoRepository{
-    findAll() : Promise<INoticiaMongo[]>;
-    findByAutor(autor: string) : Promise<INoticiaMongo[]>;
+    findAll() : Promise<INoticia[]>;
+    findByAutor(autor: string) : Promise<INoticia[]>;
 }

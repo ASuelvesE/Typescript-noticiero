@@ -1,12 +1,12 @@
-import NoticiaMongo,{INoticiaMongo} from "../../../models/mongo/NoticiaMongo";
+import Noticia,{INoticia} from "../../../models/Noticia";
 import INoticiaMongoRepository from "./InoticiaMongo.repository";
 
 export default class NoticiaMongoRepository implements INoticiaMongoRepository{
-    async findAll(): Promise<INoticiaMongo[]> {
-        return NoticiaMongo.find({});
+    async findAll(): Promise<INoticia[]> {
+        return Noticia.find({});
     }
-    async findByAutor(autor: string): Promise<INoticiaMongo[]> {
-        return NoticiaMongo.find({periodistas: [{nombre: autor}]})
+    async findByAutor(autor: string): Promise<INoticia[]> {
+        return Noticia.find({periodistas: [{nombre: autor}]})
     }
 
 }

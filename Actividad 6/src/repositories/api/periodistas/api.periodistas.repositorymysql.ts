@@ -1,11 +1,9 @@
 
 import { executeQuery } from '../../../db/mysql/mysql.connector'
-import { SignJWT } from 'jose'
-import * as jose from 'jose'
 
 import IApiPeriodistasRepository from './api.periodistas.repository'
-import Periodista from '../../../models//mysql/Periodista'
-import Noticia from '../../../models//mysql/Noticia'
+import Periodista from '../../../models/Periodista'
+import Noticia from '../../../models/Noticia'
 
 export default class ApiPeriodistasRepositoryMySQL implements IApiPeriodistasRepository {
 
@@ -27,7 +25,7 @@ export default class ApiPeriodistasRepositoryMySQL implements IApiPeriodistasRep
         where p.id ='${id}'`
         try {
             const data: any[] = await executeQuery<Periodista[]>(sql)
-            const noticias : Noticia[] = [];
+            const noticias : typeof Noticia[] = [];
             data.forEach((element,index) =>{
                 noticias.push(new Noticia(element.id,element.titulo,element.texto,[],[]))
             })
