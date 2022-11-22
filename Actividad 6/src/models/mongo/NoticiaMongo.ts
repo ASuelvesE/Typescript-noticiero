@@ -1,11 +1,13 @@
 
 import { Schema, model} from 'mongoose';
+import Periodista from '../mysql/Periodista';
+import Recurso from '../mysql/Recurso';
 
 interface INoticiaMongo {
     titulo: string
     texto: string
-    periodistas: string[]
-    recursos: string []
+    periodistas: number[]
+    recursos: number []
 }
 
 // https://mongoosejs.com/docs/guide.html
@@ -18,28 +20,8 @@ const userSchema = new Schema<INoticiaMongo>({
         type: String,
         required: true
     },
-    periodistas: {
-        type: [ 
-            { 
-                nombre: {
-                    type: String,
-                    required: true
-                },
-            }
-        ],
-        required: true
-    },
-    recursos: {
-        type: [ 
-            {  
-                url: {
-                    type: String,
-                    required: true
-                },
-            }
-        ],
-        required: true
-    }
+    periodistas: [Number],
+    recursos: [Number],
 });
 
 const NoticiaMongo = model<INoticiaMongo>('NoticiaMongo', userSchema);
