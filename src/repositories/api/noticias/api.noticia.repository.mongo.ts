@@ -24,7 +24,9 @@ export default class ApiNoticiaMongoRepository implements IApiNoticiaMongoReposi
         return this.findAll();
     }
     async delete(id: String): Promise<INoticia[]> {
-        throw new Error("Method not implemented.");
+        const deleted: INoticia[] = await this.findByIdNoticia(id);
+        await Noticia.deleteOne({_id: id});
+        return deleted;
     } 
     
 }

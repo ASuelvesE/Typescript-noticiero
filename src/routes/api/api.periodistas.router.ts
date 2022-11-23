@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import ApiPeriodistasRepositoryMySQL from '../../repositories/api/periodistas/api.periodistas.repositorymysql'
 import IApiPeriodistasRepository from '../../repositories/api/periodistas/api.periodistas.repository'
-import Periodista from '../../models//mysql/Periodista'
+import Periodista from '../../models/Periodista'
 
 
 const router = express.Router()

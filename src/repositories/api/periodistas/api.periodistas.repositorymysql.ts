@@ -8,7 +8,7 @@ import Noticia from '../../../models/Noticia'
 export default class ApiPeriodistasRepositoryMySQL implements IApiPeriodistasRepository {
 
     async findAll(): Promise<Periodista[]> {
-        const sql: string = `select nombre,fechaNacimiento FROM periodistas`
+        const sql: string = `select * FROM periodistas`
         try {
             const data: Periodista[] = await executeQuery<Periodista[]>(sql)
             return data;
@@ -18,18 +18,12 @@ export default class ApiPeriodistasRepositoryMySQL implements IApiPeriodistasRep
         }
     }
     async findById(id: number): Promise<Periodista[]> {
-        const sql: string = `select n.titulo,n.texto,p.nombre ,p.fechaNacimiento 
-        FROM noticias n 
-        join noticiasPeriodistas np on n.id = np.id_noticia  
-        join periodistas p on p.id = np.id_periodista 
-        where p.id ='${id}'`
+        const sql: string = `select * 
+        FROM periodistas
+        where id ='${id}'`
         try {
-            const data: any[] = await executeQuery<Periodista[]>(sql)
-            const noticias : typeof Noticia[] = [];
-            data.forEach((element,index) =>{
-                noticias.push(new Noticia(element.id,element.titulo,element.texto,[],[]))
-            })
-            return [new Periodista(0,data[0].nombre,data[0].fechaNacimiento,noticias)];
+            const data: Periodista[] = await executeQuery<Periodista[]>(sql)
+            return data;
         } catch (error) {
             console.error(error);
             return [];
