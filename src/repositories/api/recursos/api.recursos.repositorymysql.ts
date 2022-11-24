@@ -6,6 +6,7 @@ import IApiRecursosRepository from './api.recursos.repository'
 
 
 export default class ApiRecursosRepositoryMySQL implements IApiRecursosRepository {
+ 
     async findAll(): Promise<Recurso[]> {
         const sql: string = `select * 
         FROM periodistas`
@@ -29,11 +30,27 @@ export default class ApiRecursosRepositoryMySQL implements IApiRecursosRepositor
             return [];
         }
     }
-    async save(recurso: Recurso): Promise<Recurso[]> {
-        throw new Error('Method not implemented.')
+    async findByUrl(url: string): Promise<Recurso[]> {
+        const sql: string = `select * 
+        FROM recursos
+        where url ="${url}"`
+        try {
+            const data: Recurso[] = await executeQuery<Recurso[]>(sql);
+            return data;
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
     }
-    async update(recurso: Recurso, id: number): Promise<Recurso[]> {
-        throw new Error('Method not implemented.')
+    async save(recurso: Recurso): Promise<Recurso[]> {
+        const sql: string = `insert into recursos (url) values("${recurso.url}")`
+        try {
+            await executeQuery<Recurso[]>(sql);
+            return this.findAll();
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
     }
     async delete(id: number): Promise<Recurso[]> {
         const sql: string = `delete 

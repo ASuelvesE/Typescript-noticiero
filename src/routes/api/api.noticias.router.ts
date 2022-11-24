@@ -86,7 +86,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.get('/periodista/:id', async (req: Request, res: Response) => {
     try {       
         const allNoticias: INoticia[] = []
-        const noticiasDB: any[] = await ApinoticiasRepository.findByIdPeriodista(req.params.id);
+        const noticiasDB: any[] = await ApinoticiasRepository.findByIdPeriodista(Number(req.params.id));
 
         for(let i = 0; i< noticiasDB.length; i++){ //Recorro las noticias de mongodb
             const noticiaDB = noticiasDB[i];
@@ -114,7 +114,19 @@ router.get('/periodista/:id', async (req: Request, res: Response) => {
 })
 router.post('/', async (req: Request, res: Response) => {
     try {       
-        const noticias: INoticia[] = await ApinoticiasRepository.save(req.body)
+        const noticia : INoticia = {
+            id: 0,
+            titulo: req.body.titulo,
+            texto: req.body.texto,
+            periodistas: req.body.periodistas,
+            recursos: []
+        }
+        for(let recurso of req.body.recursos){
+            await ApiRecursosRepository.save(new Recurso(recurso.id,recurso.url)); //Guardo el recurso completo en mysql
+            const recursos:Recurso[] = await ApiRecursosRepository.findByUrl(recurso.url); //Busco el Recurso con su ID por su url
+            noticia.recursos.push(new Recurso(recursos[0].id,recursos[0].url)) //Introducto el recurso con su ID autogenerada
+        }
+        const noticias: INoticia[] = await ApinoticiasRepository.save(noticia)
         res.send(noticias)
     }
     catch (error) {
@@ -124,8 +136,10 @@ router.post('/', async (req: Request, res: Response) => {
 router.delete('/:id', async (req: Request, res: Response) => {
     try {       
         const noticias: any[] = await ApinoticiasRepository.delete(req.params.id);
-        for(let i = 0; i<noticias[0].recursos.length; i++){
-            ApiRecursosRepository.delete(noticias[0].recursos[i])
+        for(let noticia of noticias){
+            for(let recurso of noticia.recursos){
+                await ApiRecursosRepository.delete(recurso)
+            }
         }
         res.send(noticias)
     }

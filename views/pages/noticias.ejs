@@ -16,6 +16,9 @@
                 <img src="<%= `${recurso.url}` %>"/>
             <% }); %>
             <p> <%= noticia.texto %> </p>
+            <% noticia.periodistas.forEach(function(periodista) { %>
+                <p> <%= periodista.nombre %> </p>
+            <% }); %>
         <% }); %>
 
     </div>

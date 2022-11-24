@@ -7,6 +7,7 @@ import Noticia from '../../../models/Noticia'
 
 export default class ApiPeriodistasRepositoryMySQL implements IApiPeriodistasRepository {
 
+
     async findAll(): Promise<Periodista[]> {
         const sql: string = `select * FROM periodistas`
         try {
@@ -50,31 +51,9 @@ export default class ApiPeriodistasRepositoryMySQL implements IApiPeriodistasRep
         }
     }
     async delete(id: number): Promise<Periodista[]> {
-        const sql: string = `delete FROM recursos r 
-        WHERE r.id in (
-            select nr.id_recurso 
-            from noticiasRecursos nr 
-            WHERE nr.id_noticia in (
-                select n.id
-                from noticias n 
-                WHERE n.id in(
-                    SELECT np.id_noticia 	
-                    from noticiasPeriodistas np  
-                    WHERE np.id_periodista = ${id}
-                )
-            )
-        )`
-        const sql2: string = `delete from noticias n 
-        WHERE n.id in(
-            SELECT np.id_noticia 	
-            from noticiasPeriodistas np  
-            WHERE np.id_periodista = ${id}
-        )`
-        const sql3: string = `delete from periodistas p WHERE p.id = ${id}`
+        const sql: string = `delete from periodistas p WHERE p.id = ${id}`
         try {
             await executeQuery<Periodista[]>(sql)
-            await executeQuery<Periodista[]>(sql2)
-            await executeQuery<Periodista[]>(sql3)
             return this.findAll();
         } catch (error) {
             console.error(error);

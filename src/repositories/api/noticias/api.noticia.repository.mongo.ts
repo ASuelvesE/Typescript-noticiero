@@ -9,19 +9,22 @@ export default class ApiNoticiaMongoRepository implements IApiNoticiaMongoReposi
     async findByIdNoticia(id: String): Promise<INoticia[]> {
         return Noticia.find({_id: id});
     }
-    async findByIdPeriodista(id: String): Promise<INoticia[]> {
-        return Noticia.find({periodistas:[{_id: id}]});
+    async findByIdPeriodista(id: number): Promise<INoticia[]> {
+        return Noticia.find({periodistas: id});
     }
     async save(noticia: INoticia): Promise<INoticia[]> {
-
+        const recursos:number[] = [];
+        for(let recurso of noticia.recursos){
+            recursos.push(recurso.id);
+        }
         const newNoticia = new Noticia({
             titulo: noticia.titulo,
             texto: noticia.texto,
             periodistas: noticia.periodistas,
-            recursos: noticia.recursos
+            recursos: recursos
         })
-        newNoticia.save();
-        return this.findAll();
+        await newNoticia.save();
+        return await this.findAll();
     }
     async delete(id: String): Promise<INoticia[]> {
         const deleted: INoticia[] = await this.findByIdNoticia(id);

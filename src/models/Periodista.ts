@@ -6,9 +6,9 @@ export default class Periodista{
     id: number
     nombre: string
     fechaNacimiento: Date
-    noticias: typeof INoticia[]
+    noticias: typeof INoticia[] | undefined
 
-    constructor(id: number, nombre: string,fechaNacimiento: Date,noticias: typeof INoticia[]){
+    constructor(id: number, nombre: string,fechaNacimiento: Date,noticias: typeof INoticia[] | undefined){
         this.id = id;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
