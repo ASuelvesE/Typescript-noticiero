@@ -15,10 +15,10 @@
     "schemes": [
         "http"
     ],
-    "host": "localhost:3080",
+    "host": "localhost:8080",
     "basePath": "/api",
     "paths": {
-        "/noticias": {
+        "/periodistas": {
             "get": {
                 "summary": "Get all the tasks",
                 "description": "Get all the tasks",
@@ -32,7 +32,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/todosResponse"
+                                "$ref": "#/definitions/allperiodistas"
                             }
                         }
                     },
@@ -43,9 +43,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/todo": {
+            },
             "post": {
                 "summary": "Save the task",
                 "description": "Save the task",
@@ -62,14 +60,8 @@
                         "description": "task object",
                         "required": true,
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "task": {
-                                    "type": "object",
-                                    "$ref": "#/definitions/Task"
-                                }
+                            "$ref": "#/definitions/newPeriodista"
                             }
-                        }
                     }
                 ],
                 "responses": {
@@ -78,7 +70,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/todosResponse"
+                                "$ref": "#/definitions/allperiodistas"
                             }
                         }
                     },
@@ -91,7 +83,41 @@
                 }
             }
         },
-        "/todos/{id}": {
+        "/periodistas/{id}": {
+            "get": {
+                "summary": "Get all the tasks",
+                "description": "Get all the tasks",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del periodista",
+                        "required": true,
+                        "type": "string",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/periodistabyid"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
             "put": {
                 "summary": "Update the tasks",
                 "description": "Update the tasks",
@@ -139,9 +165,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/todo/{id}": {
+            },
             "delete": {
                 "summary": "Delete the task",
                 "description": "Delete the task",
@@ -163,7 +187,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/todosResponse"
+                                "$ref": "#/definitions/allperiodistas"
                             }
                         }
                     },
@@ -178,35 +202,80 @@
         }
     },
     "definitions": {
-        "todosResponse": {
+        "allperiodistas": {
             "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "task": {
-                    "type": "string"
-                },
-                "assignee": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
+            "properties": [
+                {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "type": "string"
+                    },
+                    "fechaNacimiento": {
+                        "type": "date"
+                    },
+                    "noticias": [
+                        {
+                            "titulo": {
+                                "type": "string"
+                            },
+                            "texto": {
+                                "type": "string"
+                            },
+                            "periodistas": [],
+                            "recursos": []
+                        }
+                    ]
                 }
-            }
+            ]
         },
-        "Task": {
+        "periodistabyid": {
             "type": "object",
-            "properties": {
-                "task": {
-                    "type": "string"
-                },
-                "assignee": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
+            "properties": [
+                {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "type": "string"
+                    },
+                    "fechaNacimiento": {
+                        "type": "date"
+                    },
+                    "noticias": [
+                        {
+                            "titulo": {
+                                "type": "string"
+                            },
+                            "texto": {
+                                "type": "string"
+                            },
+                            "periodistas": [],
+                            "recursos": []
+                        }
+                    ]
                 }
+            ]
+        },
+        "newPeriodista": {
+            "type": "object",
+            "required": [
+                "nombre",
+                "fechaNacimiento"
+            ],
+            "properties": {
+                "nombre": {
+                    "type": "string",
+                    "example": "Pablo"
+                },
+                "fechaNacimiento": {
+                    "type": "string",
+                    "example": "1991-07-18"
+                }
+            },
+            "xml": {
+                "name": "Periodista"
             }
         },
         "InvalidResponse": {
