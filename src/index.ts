@@ -18,6 +18,7 @@ const options: cors.CorsOptions = {
 };
 app.use(cors(options));
 
+app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 /* Swagger files start */
 const swaggerFile: any = ("src/swagger/swagger.json");
