@@ -24,7 +24,9 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/:id', async (req: Request, res: Response) => {
     try {       
         const periodistas: Periodista[] = await IApiPeriodistasRepository.findById(Number(req.params.id))
-        res.send(periodistas)
+        const noticias: any[] = await ApinoticiasRepository.findByIdPeriodista(periodistas[0].id);
+        periodistas[0].noticias = noticias;
+        res.send(periodistas[0])
     }
     catch (error) {
         res.send(error)
@@ -59,7 +61,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
             for(let recurso of noticia.recursos){
                 await ApiRecursosRepository.delete(Number(recurso));
             }
-            await ApinoticiasRepository.delete(String());
+            await ApinoticiasRepository.delete(String(noticia.id));
         }
         const periodistas: Periodista[] = await IApiPeriodistasRepository.findAll();
         res.send(periodistas)

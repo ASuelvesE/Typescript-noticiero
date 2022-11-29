@@ -140,10 +140,7 @@
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "task": {
-                                    "type": "object",
-                                    "$ref": "#/definitions/Task"
-                                }
+
                             }
                         }
                     }
@@ -154,7 +151,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/todosResponse"
+                                "$ref": "#/definitions/allperiodistas"
                             }
                         }
                     },
